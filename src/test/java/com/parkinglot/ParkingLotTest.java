@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 class ParkingLotTest {
     ParkingLot parkingLot = new ParkingLot();
-    Car car = new Car(0);
+    Car car = new Car();
 
     @Test
     void should_return_a_parking_ticket_when_parkCar_given_a_car_and_a_parkingLot() {
@@ -17,7 +17,7 @@ class ParkingLotTest {
     }
 
     @Test
-    void should_return_a_parkedCar_when_fetchParkedCar_given_a_parkedCar_and_a_parkingTicket() {
+    void should_return_a_parkedCar_when_fetchCar_given_a_parkedCar_and_a_parkingTicket() {
         //Given
         ParkingTicket parkingTicket = parkingLot.parkCar(car);
         //When
@@ -28,9 +28,9 @@ class ParkingLotTest {
     }
 
     @Test
-    void should_return_a_parkedCar_for_each_parkingTicket_when_fetchParkedCar_given_two_parkedCar_and_two_parkingTickets() {
+    void should_return_a_parkedCar_for_each_parkingTicket_when_fetchCar_given_two_parkedCar_and_two_parkingTickets() {
         //Given
-        Car car2 = new Car(1);
+        Car car2 = new Car();
         ParkingTicket parkingTicket = parkingLot.parkCar(car);
         ParkingTicket parkingTicket2 = parkingLot.parkCar(car2);
         //When
@@ -42,8 +42,9 @@ class ParkingLotTest {
         Assertions.assertFalse(fetchedCar2.isParked());
         Assertions.assertTrue(fetchedCar2.isFetched());
     }
+
     @Test
-    void should_return_a_nothing__when_fetchParkedCar_given_wrong_parkingTicket() {
+    void should_return_nothing_when_fetchCar_given_wrong_parkingTicket() {
         //Given
         ParkingTicket wrongParkingTicket = new ParkingTicket(car);
         //When
@@ -51,5 +52,29 @@ class ParkingLotTest {
         //Then
         Assertions.assertNull(fetchedCar);
     }
+
+    @Test
+    void should_return_nothing_when_fetchCar_given_used_parkingTicket() {
+        //Given
+        ParkingTicket parkingTicket = parkingLot.parkCar(car);
+        //When
+        Car fetchedCar = parkingLot.fetchCar(parkingTicket);
+        Car fetchUsingUsedTicket = parkingLot.fetchCar(parkingTicket);
+        //Then
+        Assertions.assertNull(fetchUsingUsedTicket);
+    }
+
+    @Test
+    void should_return_nothing_when_parkCar_given_no_parkingLot_available() {
+        //Given
+        ParkingLot newParkingLot = new ParkingLot(1);
+        Car car2 = new Car();
+        ParkingTicket parkingTicket = newParkingLot.parkCar(car);
+        //When
+        ParkingTicket parkingTicket2 = newParkingLot.parkCar(car2);
+        //Then
+        Assertions.assertNull(parkingTicket2);
+    }
+
 
 }
