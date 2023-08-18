@@ -1,17 +1,13 @@
 package com.parkinglot;
 
 public class Car {
-    ParkingTicket parkingTicket = null;
     int carId;
     private boolean isParked;
+    private boolean isFetched;
 
     public Car(int carId) {
         this.carId = carId;
 
-    }
-
-    public ParkingTicket getParkingTicket() {
-        return parkingTicket;
     }
 
     public int getCarId() {
@@ -22,11 +18,16 @@ public class Car {
         return isParked;
     }
 
-    public void setParkingTicket(ParkingTicket newTicket) {
-        this.parkingTicket = newTicket;
+    public boolean IsFetched() {
+        return this.isFetched;
     }
 
     public void setIsParked(boolean isParked) {
         this.isParked = isParked;
     }
+
+    public void setIsFetched(boolean isFetched) {
+        this.isFetched = isFetched;
+    }
+
 }

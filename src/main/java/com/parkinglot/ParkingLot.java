@@ -1,23 +1,33 @@
 package com.parkinglot;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ParkingLot {
-    List<Car> parkedCar = new ArrayList<>();
-    private Car car;
+    private Map<ParkingTicket, Car> ticketLog = new HashMap<>();
 
     public ParkingTicket parkCar(Car car) {
-        car.setParkingTicket(issueNewParkingTicket(car));
-        car.setIsParked(addCarToParkingLot(car));
-        return car.parkingTicket;
+        ParkingTicket newTicket = generateTicket(car);
+        car.setIsParked(addCarToParkingLot(newTicket, car));
+        return newTicket;
     }
 
-    private ParkingTicket issueNewParkingTicket(Car car) {
+    public Car fetchCar(ParkingTicket parkingTicket) {
+        if (!ticketLog.containsKey(parkingTicket)){
+            return null;
+        }
+        Car parkedCar = ticketLog.get(parkingTicket);
+        parkedCar.setIsParked(false);
+        parkedCar.setIsFetched(true);
+        return parkedCar;
+    }
+
+    private ParkingTicket generateTicket(Car car) {
         return new ParkingTicket(car);
     }
 
-    private boolean addCarToParkingLot(Car car) {
-        return parkedCar.add(car);
+    private boolean addCarToParkingLot(ParkingTicket ticket, Car car) {
+        ticketLog.put(ticket, car);
+        return ticketLog.containsKey(ticket);
     }
 }
