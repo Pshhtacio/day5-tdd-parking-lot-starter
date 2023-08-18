@@ -18,7 +18,7 @@ public class Car {
         return isParked;
     }
 
-    public boolean IsFetched() {
+    public boolean isFetched() {
         return this.isFetched;
     }
 

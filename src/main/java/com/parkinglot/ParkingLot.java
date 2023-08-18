@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ParkingLot {
-    private Map<ParkingTicket, Car> ticketLog = new HashMap<>();
+    private final Map<ParkingTicket, Car> ticketLog = new HashMap<>();
 
     public ParkingTicket parkCar(Car car) {
         ParkingTicket newTicket = generateTicket(car);
