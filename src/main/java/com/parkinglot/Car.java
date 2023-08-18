@@ -5,9 +5,7 @@ public class Car {
     private boolean isParked;
     private boolean isFetched;
 
-    public Car(int carId) {
-        this.carId = carId;
-
+    public Car() {
     }
 
     public int getCarId() {

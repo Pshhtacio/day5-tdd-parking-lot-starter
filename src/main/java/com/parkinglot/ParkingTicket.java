@@ -14,16 +14,4 @@ public class ParkingTicket {
         return isValid;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ParkingTicket)) return false;
-        ParkingTicket that = (ParkingTicket) o;
-        return ticketId == that.ticketId;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(ticketId);
-    }
 }
