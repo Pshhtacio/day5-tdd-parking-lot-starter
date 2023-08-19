@@ -1,5 +1,6 @@
 package com.parkinglot;
 
+import com.parkinglot.exception.UnrecognizedTicketException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -44,36 +45,37 @@ class ParkingLotTest {
     }
 
     @Test
-    void should_return_nothing_when_fetchCar_given_wrong_parkingTicket() {
+    void should_return_nothing_and_an_error_message_when_fetchCar_given_wrong_parkingTicket() {
         //Given
         ParkingTicket wrongParkingTicket = new ParkingTicket(car);
-        //When
-        Car fetchedCar = parkingLot.fetchCar(wrongParkingTicket);
-        //Then
-        Assertions.assertNull(fetchedCar);
+        //When & Then
+        Assertions.assertThrows(UnrecognizedTicketException.class, () -> {
+            parkingLot.fetchCar(wrongParkingTicket);
+        });
     }
 
     @Test
-    void should_return_nothing_when_fetchCar_given_used_parkingTicket() {
+    void should_return_nothing_and_an_error_message_when_fetchCar_given_used_parkingTicket() {
         //Given
         ParkingTicket parkingTicket = parkingLot.parkCar(car);
         //When
         Car fetchedCar = parkingLot.fetchCar(parkingTicket);
-        Car fetchUsingUsedTicket = parkingLot.fetchCar(parkingTicket);
         //Then
-        Assertions.assertNull(fetchUsingUsedTicket);
+        Assertions.assertThrows(UnrecognizedTicketException.class, () -> {
+            parkingLot.fetchCar(parkingTicket);
+        });
     }
 
     @Test
-    void should_return_nothing_when_parkCar_given_no_parkingLot_available() {
+    void should_return_nothing_and_an_error_message_when_parkCar_given_no_parkingLot_available() {
         //Given
         ParkingLot newParkingLot = new ParkingLot(1);
         Car car2 = new Car();
         ParkingTicket parkingTicket = newParkingLot.parkCar(car);
-        //When
-        ParkingTicket parkingTicket2 = newParkingLot.parkCar(car2);
-        //Then
-        Assertions.assertNull(parkingTicket2);
+        //When and Then
+        Assertions.assertThrows(UnrecognizedTicketException.class, () -> {
+            newParkingLot.parkCar(car2);
+        });
     }
 
 
