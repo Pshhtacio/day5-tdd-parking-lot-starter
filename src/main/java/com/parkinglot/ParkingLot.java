@@ -19,8 +19,12 @@ public class ParkingLot {
         this.capacity = DEFAULT_CAPACITY;
     }
 
+    public int getCapacity() {
+        return capacity;
+    }
+
     public ParkingTicket parkCar(Car car) {
-        if (!hasAvailableSpace(this)) {
+        if (availableSpace(this) == 0) {
             throw new FullCapacityException();
         }
         ParkingTicket newTicket = generateTicket(car);
@@ -39,7 +43,7 @@ public class ParkingLot {
         return new ParkingTicket(car);
     }
 
-    public boolean hasAvailableSpace(ParkingLot parkingLot) {
-        return !(parkingLot.ticketCarHashMap.size() >= capacity);
+    public int availableSpace(ParkingLot parkingLot) {
+        return capacity - parkingLot.ticketCarHashMap.size();
     }
 }
