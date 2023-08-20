@@ -7,162 +7,151 @@ import com.parkinglot.ParkingTicket;
 import com.parkinglot.exception.FullCapacityException;
 import com.parkinglot.exception.UnrecognizedTicketException;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 class StandardParkingBoyTest {
-    ParkingLot parkingLot = new ParkingLot();
-    List<ParkingLot> parkingLots = List.of(parkingLot);
-    Car car = new Car();
-    StandardParkingBoy standardParkingBoy = new StandardParkingBoy(parkingLots);
+
+    private ParkingLot parkingLot;
+    private StandardParkingBoy standardParkingBoy;
+    private Car car;
+
+    @BeforeEach
+    void set_up() {
+        parkingLot = new ParkingLot();
+        List<ParkingLot> parkingLots = List.of(parkingLot);
+        standardParkingBoy = new StandardParkingBoy(parkingLots);
+        car = new Car();
+    }
 
     @Test
-    void should_return_a_parking_ticket_when_parkCar_given_a_car_and_a_parkingLot() {
-        //When
+    void should_return_parking_ticket_when_park_car_given_car_and_parking_lot() {
         ParkingTicket parkingTicket = standardParkingBoy.parkCar(car);
-        //Then
         Assertions.assertNotNull(parkingTicket);
     }
 
     @Test
-    void should_return_a_parkedCar_when_fetchCar_given_a_parkedCar_and_a_parkingTicket() {
-        //Given
+    void should_return_parked_car_when_fetch_car_given_parked_car_and_parking_ticket() {
         ParkingTicket parkingTicket = standardParkingBoy.parkCar(car);
-        //When
         Car fetchedCar = standardParkingBoy.fetchCar(parkingTicket);
-        //Then
         Assertions.assertNotNull(fetchedCar);
     }
 
     @Test
-    void should_return_a_parkedCar_for_each_parkingTicket_when_fetchCar_given_two_parkedCar_and_two_parkingTickets() {
-        //Given
+    void should_return_parked_car_for_each_parking_ticket_when_fetch_car_given_two_parked_cars_and_two_parking_tickets() {
         Car car2 = new Car();
         ParkingTicket parkingTicket = standardParkingBoy.parkCar(car);
         ParkingTicket parkingTicket2 = standardParkingBoy.parkCar(car2);
-        //When
+
         Car fetchedCar = standardParkingBoy.fetchCar(parkingTicket);
         Car fetchedCar2 = standardParkingBoy.fetchCar(parkingTicket2);
-        //Then
+
         Assertions.assertNotNull(fetchedCar);
         Assertions.assertNotNull(fetchedCar2);
     }
 
     @Test
-    void should_return_nothing_and_an_error_message_when_fetchCar_given_wrong_parkingTicket() {
-        //Given
+    void should_return_nothing_and_an_error_message_when_fetch_car_given_wrong_parking_ticket() {
         ParkingTicket wrongParkingTicket = new ParkingTicket(car);
-        //When & Then
         Assertions.assertThrows(UnrecognizedTicketException.class, () -> {
             standardParkingBoy.fetchCar(wrongParkingTicket);
         });
     }
 
     @Test
-    void should_return_nothing_and_an_error_message_when_fetchCar_given_used_parkingTicket() {
-        //Given
+    void should_return_nothing_and_an_error_message_when_fetch_car_given_used_parking_ticket() {
         ParkingTicket parkingTicket = standardParkingBoy.parkCar(car);
-        //When
-        Car fetchedCar = standardParkingBoy.fetchCar(parkingTicket);
-        //Then
+        standardParkingBoy.fetchCar(parkingTicket);
+
         Assertions.assertThrows(UnrecognizedTicketException.class, () -> {
             standardParkingBoy.fetchCar(parkingTicket);
         });
     }
 
     @Test
-    void should_return_nothing_and_an_error_message_when_parkCar_given_no_parkingLot_available() {
-        //Given
+    void should_return_nothing_and_an_error_message_when_park_car_given_no_parking_lot_available() {
         ParkingLot fullCapacityParkingLot = new ParkingLot(0);
-        List<ParkingLot> parkingLot = List.of(fullCapacityParkingLot);
-        StandardParkingBoy standardParkingBoy = new StandardParkingBoy(parkingLot);
+        List<ParkingLot> parkingLots = List.of(fullCapacityParkingLot);
+        StandardParkingBoy standardParkingBoy = new StandardParkingBoy(parkingLots);
         Car car2 = new Car();
-        //When and Then
+
         Assertions.assertThrows(FullCapacityException.class, () -> {
             standardParkingBoy.parkCar(car2);
         });
     }
 
-    //Story 4 test cases
+    // Additional test cases for Story 4
     @Test
-    void should_return_a_parking_ticket_when_parkCar_given_a_car_a_standard_parkingBoy_and_two_parkingLot() {
-        //Given
+    void should_return_parking_ticket_when_park_car_given_car_a_standard_parking_boy_and_two_parking_lots() {
         ParkingLot firstParkingLot = new ParkingLot();
         ParkingLot secondParkingLot = new ParkingLot();
-        List<ParkingLot> parkingLot = List.of(firstParkingLot, secondParkingLot);
-        StandardParkingBoy newStandardParkingBoy = new StandardParkingBoy(parkingLot);
-        //When
+        List<ParkingLot> parkingLots = List.of(firstParkingLot, secondParkingLot);
+        StandardParkingBoy newStandardParkingBoy = new StandardParkingBoy(parkingLots);
+
         ParkingTicket parkingTicket = newStandardParkingBoy.parkCar(car);
-        //Then
         Assertions.assertNotNull(parkingTicket);
     }
 
     @Test
-    void should_return_a_parkedCar_when_fetchCar_given_a_parkedCar_a_parkingTicket_a_standard_parkingBoy_and_two_parkingLot() {
-        //Given
+    void should_return_parked_car_when_fetch_car_given_parked_car_a_parking_ticket_a_standard_parking_boy_and_two_parking_lots() {
         ParkingLot firstParkingLot = new ParkingLot();
         ParkingLot secondParkingLot = new ParkingLot();
-        List<ParkingLot> parkingLot = List.of(firstParkingLot, secondParkingLot);
-        StandardParkingBoy newStandardParkingBoy = new StandardParkingBoy(parkingLot);
+        List<ParkingLot> parkingLots = List.of(firstParkingLot, secondParkingLot);
+        StandardParkingBoy newStandardParkingBoy = new StandardParkingBoy(parkingLots);
+
         ParkingTicket parkingTicket = newStandardParkingBoy.parkCar(car);
-        //When
         Car fetchedCar = newStandardParkingBoy.fetchCar(parkingTicket);
-        //Then
         Assertions.assertNotNull(fetchedCar);
     }
 
     @Test
-    void should_return_a_parkedCar_for_each_parkingTicket_when_fetchCar_given_a_standard_parkingBoy_two_parkedCar_two_parkingTickets_and_two_parking_lot() {
-        //Given
+    void should_return_parked_car_for_each_parking_ticket_when_fetch_car_given_a_standard_parking_boy_two_parked_cars_two_parking_tickets_and_two_parking_lots() {
         Car car2 = new Car();
         ParkingTicket parkingTicket = standardParkingBoy.parkCar(car);
         ParkingTicket parkingTicket2 = standardParkingBoy.parkCar(car2);
-        //When
+
         Car fetchedCar = standardParkingBoy.fetchCar(parkingTicket);
         Car fetchedCar2 = standardParkingBoy.fetchCar(parkingTicket2);
-        //Then
+
         Assertions.assertNotNull(fetchedCar);
         Assertions.assertNotNull(fetchedCar2);
     }
 
     @Test
-    void should_return_nothing_and_an_error_message_when_fetchCar_a_standard_parkingBoy_given_wrong_parkingTicket_two_parked_car_and_two_parking_lot() {
-        //Given
+    void should_return_nothing_and_an_error_message_when_fetch_car_a_standard_parking_boy_given_wrong_parking_ticket_two_parked_cars_and_two_parking_lots() {
         ParkingTicket wrongParkingTicket = new ParkingTicket(car);
-        //When & Then
+
         Assertions.assertThrows(UnrecognizedTicketException.class, () -> {
             standardParkingBoy.fetchCar(wrongParkingTicket);
         });
     }
 
     @Test
-    void should_return_nothing_and_an_error_message_when_fetchCar_given_used_parkingTicket_a_standard_parkingBoy_and_two_parkingLot() {
-        //Given
+    void should_return_nothing_and_an_error_message_when_fetch_car_given_used_parking_ticket_a_standard_parking_boy_and_two_parking_lots() {
         ParkingLot firstParkingLot = new ParkingLot();
         ParkingLot secondParkingLot = new ParkingLot();
-        List<ParkingLot> parkingLot = List.of(firstParkingLot, secondParkingLot);
-        StandardParkingBoy newStandardParkingBoy = new StandardParkingBoy(parkingLot);
+        List<ParkingLot> parkingLots = List.of(firstParkingLot, secondParkingLot);
+        StandardParkingBoy newStandardParkingBoy = new StandardParkingBoy(parkingLots);
+
         ParkingTicket parkingTicket = newStandardParkingBoy.parkCar(car);
-        //When
-        Car fetchedCar = newStandardParkingBoy.fetchCar(parkingTicket);
-        //Then
+        newStandardParkingBoy.fetchCar(parkingTicket);
+
         Assertions.assertThrows(UnrecognizedTicketException.class, () -> {
             newStandardParkingBoy.fetchCar(parkingTicket);
         });
     }
 
     @Test
-    void should_return_nothing_and_an_error_message_when_parkCar_given_two_parkingLot_with_full_capacity_a_standard_parkingBoy_and_a_car() {
-        //Given
+    void should_return_nothing_and_an_error_message_when_park_car_given_two_parking_lots_with_full_capacity_a_standard_parking_boy_and_a_car() {
         ParkingLot fullCapacityParkingLot1 = new ParkingLot(0);
         ParkingLot fullCapacityParkingLot2 = new ParkingLot(0);
-        List<ParkingLot> parkingLot = List.of(fullCapacityParkingLot1,fullCapacityParkingLot2);
-        StandardParkingBoy standardParkingBoy = new StandardParkingBoy(parkingLot);
-        //When and Then
+        List<ParkingLot> parkingLots = List.of(fullCapacityParkingLot1, fullCapacityParkingLot2);
+        StandardParkingBoy standardParkingBoy = new StandardParkingBoy(parkingLots);
+
         Assertions.assertThrows(FullCapacityException.class, () -> {
             standardParkingBoy.parkCar(car);
         });
     }
-
 }
