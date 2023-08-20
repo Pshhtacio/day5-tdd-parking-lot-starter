@@ -3,6 +3,9 @@ package com.parkinglot;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.parkinglot.exception.FullCapacityException;
+import com.parkinglot.exception.UnrecognizedTicketException;
+
 public class ParkingLot {
     private final int DEFAULT_CAPACITY = 10;
     private final int capacity;
@@ -17,12 +20,18 @@ public class ParkingLot {
     }
 
     public ParkingTicket parkCar(Car car) {
+        if (!hasAvailableSpace(this)) {
+            throw new FullCapacityException();
+        }
         ParkingTicket newTicket = generateTicket(car);
         ticketCarHashMap.put(newTicket, car);
         return newTicket;
     }
 
     public Car fetchCar(ParkingTicket parkingTicket) {
+        if (parkingTicket == null || !ticketCarHashMap.containsKey(parkingTicket)) {
+            throw new UnrecognizedTicketException();
+        }
         return ticketCarHashMap.remove(parkingTicket);
     }
 
