@@ -3,14 +3,13 @@ package com.parkinglot;
 import com.parkinglot.exception.FullCapacityException;
 import com.parkinglot.exception.UnrecognizedTicketException;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ParkingBoy {
-    private final List<ParkingLot> parkingLots = new ArrayList<>();
+public class StandardParkingBoy {
+    private List<ParkingLot> parkingLots;
 
-    public ParkingBoy(ParkingLot parkingLots) {
-        this.parkingLots.add(parkingLots);
+    public StandardParkingBoy(List<ParkingLot> parkingLots) {
+        this.parkingLots = parkingLots;
     }
 
     public ParkingTicket parkCar(Car car) {
