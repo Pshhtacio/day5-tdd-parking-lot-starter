@@ -8,25 +8,20 @@ import com.parkinglot.exception.FullCapacityException;
 import com.parkinglot.exception.UnrecognizedTicketException;
 
 public class ParkingLot {
-    private final int DEFAULT_CAPACITY = 10;
     private final int capacity;
     private final Map<ParkingTicket, Car> ticketCarHashMap = new HashMap<>();
-    private int id;
+    private int id; //For verification
 
     public ParkingLot(int capacity) {
         this.capacity = capacity;
     }
 
     public ParkingLot() {
-        this.capacity = DEFAULT_CAPACITY;
-    }
-
-    public int getCapacity() {
-        return capacity;
+        this.capacity = 10;
     }
 
     public ParkingTicket parkCar(Car car) {
-        if (availableSpace(this) == 0) {
+        if (availableSpace() == 0) {
             throw new FullCapacityException();
         }
         ParkingTicket newTicket = generateTicket(car);
@@ -46,8 +41,12 @@ public class ParkingLot {
         return new ParkingTicket(car);
     }
 
-    public int availableSpace(ParkingLot parkingLot) {
-        return capacity - parkingLot.ticketCarHashMap.size();
+    public int availableSpace() {
+        return capacity - this.ticketCarHashMap.size();
+    }
+
+    public double availableSpaceRate() {
+        return (double) this.ticketCarHashMap.size() / capacity;
     }
 
     @Override

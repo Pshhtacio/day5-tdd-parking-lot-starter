@@ -4,31 +4,31 @@ import com.parkinglot.exception.FullCapacityException;
 import com.parkinglot.exception.UnrecognizedTicketException;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class ParkingBoy {
-    private List<ParkingLot> parkingLots;
+    private final List<ParkingLot> parkingLots;
 
     public ParkingBoy(List<ParkingLot> parkingLots) {
         this.parkingLots = parkingLots;
     }
 
     public ParkingTicket parkCar(Car car) {
-        for (ParkingLot parkingLot : parkingLots) {
-            if (parkingLot.availableSpace(parkingLot) <= parkingLot.getCapacity()) {
-                return parkingLot.parkCar(car);
-            }
-        }
-        throw new FullCapacityException();
+        Optional<ParkingLot> selectedParkingLot = parkingLots.stream()
+                .filter(parkingLot -> parkingLot.availableSpace() > 0)
+                .findFirst();
+
+        return selectedParkingLot.map(parkingLot -> parkingLot.parkCar(car))
+                .orElseThrow(FullCapacityException::new);
     }
 
     public Car fetchCar(ParkingTicket parkingTicket) {
-        for (ParkingLot parkingLot : parkingLots) {
-            Car car = parkingLot.fetchCar(parkingTicket);
-            if (car != null) {
-                return car;
-            }
-        }
-        throw new UnrecognizedTicketException();
+        return parkingLots.stream()
+                .map(parkingLot -> parkingLot.fetchCar(parkingTicket))
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElseThrow(UnrecognizedTicketException::new);
     }
 
     public List<ParkingLot> getParkingLots() {
