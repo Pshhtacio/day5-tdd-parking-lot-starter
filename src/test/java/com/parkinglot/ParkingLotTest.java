@@ -14,7 +14,7 @@ class ParkingLotTest {
     ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
 
     @Test
-    void should_return_a_parking_ticket_when_parkCar_given_a_car_and_a_parkingLot() {
+    void should_return_a_parking_ticket_when_parkCar_given_a_car_a_standard_parkingBoy_and_a_parkingLot() {
         //When
         ParkingTicket parkingTicket = parkingBoy.parkCar(car);
         //Then
@@ -22,7 +22,7 @@ class ParkingLotTest {
     }
 
     @Test
-    void should_return_a_parkedCar_when_fetchCar_given_a_parkedCar_and_a_parkingTicket() {
+    void should_return_a_parkedCar_when_fetchCar_given_a_parkedCar_a_standard_parkingBoy_a_parkingLot_and_a_parkingTicket() {
         //Given
         ParkingTicket parkingTicket = parkingBoy.parkCar(car);
         //When
@@ -32,7 +32,7 @@ class ParkingLotTest {
     }
 
     @Test
-    void should_return_a_parkedCar_for_each_parkingTicket_when_fetchCar_given_two_parkedCar_and_two_parkingTickets() {
+    void should_return_a_parkedCar_for_each_parkingTicket_when_fetchCar_given_two_parkedCar_a_standard_parkingBoy_a_parkingLot_and_two_parkingTickets() {
         //Given
         Car car2 = new Car();
         ParkingTicket parkingTicket = parkingBoy.parkCar(car);
@@ -46,7 +46,7 @@ class ParkingLotTest {
     }
 
     @Test
-    void should_return_nothing_and_an_error_message_when_fetchCar_given_wrong_parkingTicket() {
+    void should_return_nothing_and_an_error_message_when_fetchCar_given_wrong_parkingTicket_a_standard_parkingBoy_and_a_parkingLot() {
         //Given
         ParkingTicket wrongParkingTicket = new ParkingTicket(car);
         //When & Then
@@ -56,7 +56,7 @@ class ParkingLotTest {
     }
 
     @Test
-    void should_return_nothing_and_an_error_message_when_fetchCar_given_used_parkingTicket() {
+    void should_return_nothing_and_an_error_message_when_fetchCar_given_used_parkingTicket_a_standard_parkingBoy_and_a_parkingLot() {
         //Given
         ParkingTicket parkingTicket = parkingBoy.parkCar(car);
         //When
@@ -68,7 +68,7 @@ class ParkingLotTest {
     }
 
     @Test
-    void should_return_nothing_and_an_error_message_when_parkCar_given_no_parkingLot_available() {
+    void should_return_nothing_and_an_error_message_when_parkCar_given_no_parkingLot_available_a_standard_parkingBoy_and_a_car() {
         //Given
         ParkingLot newParkingLot = new ParkingLot(1);
         ParkingBoy newParkingBoy = new ParkingBoy(newParkingLot);
