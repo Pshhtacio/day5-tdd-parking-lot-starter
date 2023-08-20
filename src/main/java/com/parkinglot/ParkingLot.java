@@ -2,6 +2,7 @@ package com.parkinglot;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import com.parkinglot.exception.FullCapacityException;
 import com.parkinglot.exception.UnrecognizedTicketException;
@@ -10,6 +11,7 @@ public class ParkingLot {
     private final int DEFAULT_CAPACITY = 10;
     private final int capacity;
     private final Map<ParkingTicket, Car> ticketCarHashMap = new HashMap<>();
+    private int id;
 
     public ParkingLot(int capacity) {
         this.capacity = capacity;
@@ -28,6 +30,7 @@ public class ParkingLot {
             throw new FullCapacityException();
         }
         ParkingTicket newTicket = generateTicket(car);
+        newTicket.setParkingLocation(this);
         ticketCarHashMap.put(newTicket, car);
         return newTicket;
     }
@@ -45,5 +48,18 @@ public class ParkingLot {
 
     public int availableSpace(ParkingLot parkingLot) {
         return capacity - parkingLot.ticketCarHashMap.size();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ParkingLot)) return false;
+        ParkingLot that = (ParkingLot) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
