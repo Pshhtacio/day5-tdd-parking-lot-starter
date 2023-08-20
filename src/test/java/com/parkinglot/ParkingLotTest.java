@@ -1,6 +1,6 @@
 package com.parkinglot;
 
-import com.parkinglot.exception.CapacityLimitException;
+import com.parkinglot.exception.FullCapacityException;
 import com.parkinglot.exception.UnrecognizedTicketException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -75,7 +75,7 @@ class ParkingLotTest {
         Car car2 = new Car();
         ParkingTicket parkingTicket = newParkingBoy.parkCar(car);
         //When and Then
-        Assertions.assertThrows(CapacityLimitException.class, () -> {
+        Assertions.assertThrows(FullCapacityException.class, () -> {
             newParkingBoy.parkCar(car2);
         });
     }
